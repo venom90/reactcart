@@ -22,7 +22,7 @@ class HomePage extends Component{
                     <h1>Welcome to Smart SHOP</h1>
                     <div className="row">
                         <div className="col-md-8">
-                            <ListProduct key={this.state.key} cartUpdated={this.cartUpdated}/>
+                            <ListProduct cartUpdated={this.cartUpdated}/>
                         </div>
                         <div className="col-md-4">
                             <Cart key={this.state.key} />
