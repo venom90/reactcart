@@ -40241,6 +40241,8 @@
 	            }
 	            this.forceUpdate();
 	            this.update();
+
+	            window.location.reload();
 	        }
 	    }, {
 	        key: 'update',

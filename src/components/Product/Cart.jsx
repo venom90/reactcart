@@ -27,6 +27,8 @@ class Cart extends Component{
         }
         this.forceUpdate();
         this.update();
+
+        window.location.reload();
     }
     update(item){
         const that = this;
