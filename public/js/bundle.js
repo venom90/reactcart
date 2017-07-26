@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "./static/js";
+/******/ 	__webpack_require__.p = "./public/js";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -27218,7 +27218,7 @@
 
 	var _ListProduct2 = _interopRequireDefault(_ListProduct);
 
-	var _Cart = __webpack_require__(247);
+	var _Cart = __webpack_require__(246);
 
 	var _Cart2 = _interopRequireDefault(_Cart);
 
@@ -27271,7 +27271,7 @@
 	                        _react2.default.createElement(
 	                            'div',
 	                            { className: 'col-md-8' },
-	                            _react2.default.createElement(_ListProduct2.default, { key: this.state.key, cartUpdated: this.cartUpdated })
+	                            _react2.default.createElement(_ListProduct2.default, { cartUpdated: this.cartUpdated })
 	                        ),
 	                        _react2.default.createElement(
 	                            'div',
@@ -27309,7 +27309,7 @@
 
 	var _mockdata2 = _interopRequireDefault(_mockdata);
 
-	var _QuickView = __webpack_require__(245);
+	var _QuickView = __webpack_require__(240);
 
 	var _QuickView2 = _interopRequireDefault(_QuickView);
 
@@ -27372,6 +27372,138 @@
 /* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _uniqid = __webpack_require__(241);
+
+	var _uniqid2 = _interopRequireDefault(_uniqid);
+
+	var _jsCookie = __webpack_require__(243);
+
+	var _jsCookie2 = _interopRequireDefault(_jsCookie);
+
+	var _AddToCart = __webpack_require__(244);
+
+	var _AddToCart2 = _interopRequireDefault(_AddToCart);
+
+	var _lodash = __webpack_require__(245);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var QuickView = function (_Component) {
+	    _inherits(QuickView, _Component);
+
+	    function QuickView(props) {
+	        _classCallCheck(this, QuickView);
+
+	        var _this = _possibleConstructorReturn(this, (QuickView.__proto__ || Object.getPrototypeOf(QuickView)).call(this, props));
+
+	        _this.cart = _jsCookie2.default.getJSON('cart') || {};
+
+	        _this.state = {
+	            q: !_lodash2.default.isEmpty(_this.cart) && _this.cart[_this.props.product.id] ? _this.cart[_this.props.product.id].q : 0
+	        };
+
+	        _this.inc = _this.inc.bind(_this);
+	        _this.dec = _this.dec.bind(_this);
+	        _this.updateCookie = _this.updateCookie.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(QuickView, [{
+	        key: 'inc',
+	        value: function inc() {
+	            this.setState({ q: this.state.q + 1 }, this.updateCookie.bind(this, this.props.product.id));
+	        }
+	    }, {
+	        key: 'dec',
+	        value: function dec() {
+	            if (this.state.q === 0) return;
+	            this.setState({ q: this.state.q - 1 }, this.updateCookie.bind(this, this.props.product.id));
+	        }
+	    }, {
+	        key: 'updateCookie',
+	        value: function updateCookie(id) {
+	            var cart = _jsCookie2.default.getJSON('cart') || {};
+	            cart[id] = { q: this.state.q, p: this.props.product.price, id: id };
+	            _jsCookie2.default.set('cart', cart);
+	            this.props.cartUpdated.call(this);
+	        }
+	    }, {
+	        key: 'addToCart',
+	        value: function addToCart(id, evt) {
+	            this.setState({ q: this.state.q + 1 }, this.updateCookie.bind(this, id));
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                { key: this.props.product.etag, className: 'box box-primary pull-left product' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'text-center' },
+	                    _react2.default.createElement('img', { src: this.props.product.image + ('?id=' + (0, _uniqid2.default)()), alt: this.props.product.name, style: { width: 200 } }),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'row' },
+	                        _react2.default.createElement(
+	                            'h4',
+	                            null,
+	                            this.props.product.manufacturer
+	                        ),
+	                        _react2.default.createElement(
+	                            'h3',
+	                            null,
+	                            this.props.product.name
+	                        ),
+	                        _react2.default.createElement(
+	                            'h2',
+	                            null,
+	                            'Price: Rs ',
+	                            this.props.product.price
+	                        ),
+	                        this.state.q > 0 ? _react2.default.createElement(_AddToCart2.default, { q: this.state.q, inc: this.inc, dec: this.dec }) : _react2.default.createElement(
+	                            'button',
+	                            {
+	                                className: 'btn btn-primary',
+	                                onClick: this.addToCart.bind(this, this.props.product.id)
+	                            },
+	                            'Add to cart'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return QuickView;
+	}(_react.Component);
+
+	exports.default = QuickView;
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/* WEBPACK VAR INJECTION */(function(process, module) {/* 
 	(The MIT License)
 	Copyright (c) 2014 Halász Ádám <mail@adamhalasz.com>
@@ -27410,10 +27542,10 @@
 	    }
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(241)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(242)(module)))
 
 /***/ },
-/* 241 */
+/* 242 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -27429,7 +27561,6 @@
 
 
 /***/ },
-/* 242 */,
 /* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -27684,138 +27815,6 @@
 
 /***/ },
 /* 245 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _uniqid = __webpack_require__(240);
-
-	var _uniqid2 = _interopRequireDefault(_uniqid);
-
-	var _jsCookie = __webpack_require__(243);
-
-	var _jsCookie2 = _interopRequireDefault(_jsCookie);
-
-	var _AddToCart = __webpack_require__(244);
-
-	var _AddToCart2 = _interopRequireDefault(_AddToCart);
-
-	var _lodash = __webpack_require__(246);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var QuickView = function (_Component) {
-	    _inherits(QuickView, _Component);
-
-	    function QuickView(props) {
-	        _classCallCheck(this, QuickView);
-
-	        var _this = _possibleConstructorReturn(this, (QuickView.__proto__ || Object.getPrototypeOf(QuickView)).call(this, props));
-
-	        _this.cart = _jsCookie2.default.getJSON('cart') || {};
-
-	        _this.state = {
-	            q: !_lodash2.default.isEmpty(_this.cart) && _this.cart[_this.props.product.id] ? _this.cart[_this.props.product.id].q : 0
-	        };
-
-	        _this.inc = _this.inc.bind(_this);
-	        _this.dec = _this.dec.bind(_this);
-	        _this.updateCookie = _this.updateCookie.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(QuickView, [{
-	        key: 'inc',
-	        value: function inc() {
-	            this.setState({ q: this.state.q + 1 }, this.updateCookie.bind(this, this.props.product.id));
-	        }
-	    }, {
-	        key: 'dec',
-	        value: function dec() {
-	            if (this.state.q === 0) return;
-	            this.setState({ q: this.state.q - 1 }, this.updateCookie.bind(this, this.props.product.id));
-	        }
-	    }, {
-	        key: 'updateCookie',
-	        value: function updateCookie(id) {
-	            var cart = _jsCookie2.default.getJSON('cart') || {};
-	            cart[id] = { q: this.state.q, p: this.props.product.price, id: id };
-	            _jsCookie2.default.set('cart', cart);
-	            this.props.cartUpdated.call(this);
-	        }
-	    }, {
-	        key: 'addToCart',
-	        value: function addToCart(id, evt) {
-	            this.setState({ q: this.state.q + 1 }, this.updateCookie.bind(this, id));
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'div',
-	                { key: this.props.product.etag, className: 'box box-primary pull-left product' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'text-center' },
-	                    _react2.default.createElement('img', { src: this.props.product.image + ('?id=' + (0, _uniqid2.default)()), alt: this.props.product.name, style: { width: 200 } }),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'row' },
-	                        _react2.default.createElement(
-	                            'h4',
-	                            null,
-	                            this.props.product.manufacturer
-	                        ),
-	                        _react2.default.createElement(
-	                            'h3',
-	                            null,
-	                            this.props.product.name
-	                        ),
-	                        _react2.default.createElement(
-	                            'h2',
-	                            null,
-	                            'Price: Rs ',
-	                            this.props.product.price
-	                        ),
-	                        this.state.q > 0 ? _react2.default.createElement(_AddToCart2.default, { q: this.state.q, inc: this.inc, dec: this.dec }) : _react2.default.createElement(
-	                            'button',
-	                            {
-	                                className: 'btn btn-primary',
-	                                onClick: this.addToCart.bind(this, this.props.product.id)
-	                            },
-	                            'Add to cart'
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return QuickView;
-	}(_react.Component);
-
-	exports.default = QuickView;
-
-/***/ },
-/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -40170,10 +40169,10 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(241)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(242)(module), (function() { return this; }())))
 
 /***/ },
-/* 247 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40188,7 +40187,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _lodash = __webpack_require__(246);
+	var _lodash = __webpack_require__(245);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 

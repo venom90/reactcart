@@ -10,7 +10,7 @@ class ListProduct extends Component{
         return(
             <div>
                 {products.map((product, index) => {
-                    return <QuickView cartUpdated={this.props.cartUpdated} product={product} key={product.etag}/>;
+                    return <QuickView cartUpdated={this.props.cartUpdated} product={product} key={product.etag} />;
                 })}
             </div>
         );
