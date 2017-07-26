@@ -1,0 +1,9 @@
+.content-wrapper, .right-side, .main-footer{margin-left: 0;}
+
+.product {
+    padding: 12px;
+    width: 345px;
+    margin: 10px;
+    margin-left: 0;
+    min-height: 400px;
+}
